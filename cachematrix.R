@@ -1,34 +1,25 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
-
+## This function gets and sets the value of a matrix and gets and sets the value of the inverse of that matrix
 makeCacheMatrix <- function(x = matrix()) {
- m <- NULL
- set <- function(y) {
- x <<- y
- m <<- NULL
-}
- get <- function() x
- setsolve <- function(solve) m <<- solve
- getsolve <- function() m
- list(set = set, get = get,
- setsolve = setsolve,
- getsolve = getsolve)
-
+   m <- NULL                                ## initialize objet m
+   set <- function(y) {                     ## function to set the value of m
+      x <<- y
+      m <<- NULL                            ## sets the global value NULL to m
+   }
+   get <- function() x                      ## function that gets m
+   setsolve <- function(solve) m <<- solve  ## function calculates the inverse of the matrix and store it globally
+   getsolve <- function() m                 ## get cached value of the inverse matrix stored in setsolve
+   list(set = set, get = get, setsolve = setsolve, getsolve = getsolve)  ## list elements
 }
 
-
-## Write a short comment describing this function
-
+## This function returns a matrix that is the inverse of 'x'
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-m <- x$getsolve()
-if(!is.null(m)) {
-message("getting cached data")
-return(m)
-data <- x$get()
-m <- solve(data, ...)
-x$setsolve(m)
-m
+   m <- x$getsolve()                        ## m stores the inverse matrix
+   if(!is.null(m)) {                        ## if inverse matrix is previously calculated
+      message("getting cached data")        ## print message
+      return(m)                             ## gets the inverse matrix stored in cache
+   }
+   data <- x$get()                          ## gets the matrix
+   m <- solve(data, ...)                    ## calculates for the first time its inverse
+   x$setsolve(m)                            ## stores the value of the just calculated inverted matrix in cache
+   m                                        ## print matrix
 }
